@@ -2,10 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import MonthlyExpensesChart from "@/components/MonthlyExpensesChart";
+import CategoryPieChart from "@/components/CategoryPieChart";
+import DashboardSummary from "@/components/DashboardSummary";
+import BudgetForm from "@/components/BudgetForm";
+import BudgetComparisonChart from "@/components/BudgetComparisonChart";
+import SpendingInsights from "@/components/SpendingInsights";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
