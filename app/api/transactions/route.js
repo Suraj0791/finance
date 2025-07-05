@@ -4,13 +4,14 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    console.log("Fetching transactions...");
     await connectDB();
     const transactions = await Transaction.find().sort({ date: -1 });
     return NextResponse.json({ transactions }, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
     return NextResponse.json(
-      { error: "Failed to fetch transactions" },
+      { error: "Failed to fetch transactions", details: error.message },
       { status: 500 }
     );
   }
@@ -18,6 +19,7 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    console.log("Creating transaction...");
     await connectDB();
     const body = await request.json();
 
@@ -59,7 +61,7 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error creating transaction:", error);
     return NextResponse.json(
-      { error: "Failed to create transaction" },
+      { error: "Failed to create transaction", details: error.message },
       { status: 500 }
     );
   }

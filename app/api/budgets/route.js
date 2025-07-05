@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
   try {
+    console.log("Fetching budgets...");
     await connectDB();
     const { searchParams } = new URL(request.url);
     const month = searchParams.get("month");
@@ -19,7 +20,7 @@ export async function GET(request) {
   } catch (error) {
     console.error("Error fetching budgets:", error);
     return NextResponse.json(
-      { error: "Failed to fetch budgets" },
+      { error: "Failed to fetch budgets", details: error.message },
       { status: 500 }
     );
   }
@@ -27,6 +28,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    console.log("Creating budget...");
     await connectDB();
     const body = await request.json();
 
@@ -73,7 +75,7 @@ export async function POST(request) {
       );
     }
     return NextResponse.json(
-      { error: "Failed to create budget" },
+      { error: "Failed to create budget", details: error.message },
       { status: 500 }
     );
   }
