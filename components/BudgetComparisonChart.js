@@ -1,12 +1,26 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { startOfMonth, endOfMonth } from 'date-fns';
+import { useMemo } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { startOfMonth, endOfMonth } from "date-fns";
 
-export default function BudgetComparisonChart({ transactions, budgets, selectedMonth, selectedYear }) {
+export default function BudgetComparisonChart({
+  transactions,
+  budgets,
+  selectedMonth,
+  selectedYear,
+}) {
   const comparisonData = useMemo(() => {
     if (!budgets || budgets.length === 0) {
       return [];
@@ -16,7 +30,9 @@ export default function BudgetComparisonChart({ transactions, budgets, selectedM
     const year = selectedYear || new Date().getFullYear();
 
     // Filter budgets for selected month/year
-    const monthBudgets = budgets.filter(b => b.month === month && b.year === year);
+    const monthBudgets = budgets.filter(
+      (b) => b.month === month && b.year === year
+    );
 
     if (monthBudgets.length === 0) {
       return [];
@@ -27,37 +43,42 @@ export default function BudgetComparisonChart({ transactions, budgets, selectedM
     const monthEnd = endOfMonth(new Date(year, month - 1));
 
     const actualSpending = transactions
-      .filter(t => {
+      .filter((t) => {
         const transactionDate = new Date(t.date);
-        return t.type === 'expense' && 
-               transactionDate >= monthStart && 
-               transactionDate <= monthEnd;
+        return (
+          t.type === "expense" &&
+          transactionDate >= monthStart &&
+          transactionDate <= monthEnd
+        );
       })
       .reduce((acc, t) => {
-        const category = t.category || 'Other';
+        const category = t.category || "Other";
         acc[category] = (acc[category] || 0) + t.amount;
         return acc;
       }, {});
 
-    return monthBudgets.map(budget => {
-      const actual = actualSpending[budget.category] || 0;
-      const percentage = budget.budgetAmount > 0 ? (actual / budget.budgetAmount) * 100 : 0;
-      
-      return {
-        category: budget.category,
-        budget: budget.budgetAmount,
-        actual: actual,
-        remaining: Math.max(0, budget.budgetAmount - actual),
-        percentage: Math.min(100, percentage),
-        isOverBudget: actual > budget.budgetAmount
-      };
-    }).sort((a, b) => a.category.localeCompare(b.category));
+    return monthBudgets
+      .map((budget) => {
+        const actual = actualSpending[budget.category] || 0;
+        const percentage =
+          budget.budgetAmount > 0 ? (actual / budget.budgetAmount) * 100 : 0;
+
+        return {
+          category: budget.category,
+          budget: budget.budgetAmount,
+          actual: actual,
+          remaining: Math.max(0, budget.budgetAmount - actual),
+          percentage: Math.min(100, percentage),
+          isOverBudget: actual > budget.budgetAmount,
+        };
+      })
+      .sort((a, b) => a.category.localeCompare(b.category));
   }, [transactions, budgets, selectedMonth, selectedYear]);
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(value);
   };
@@ -68,9 +89,15 @@ export default function BudgetComparisonChart({ transactions, budgets, selectedM
       return (
         <div className="bg-white p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{label}</p>
-          <p className="text-sm text-blue-600">Budget: {formatCurrency(data.budget)}</p>
-          <p className="text-sm text-red-600">Actual: {formatCurrency(data.actual)}</p>
-          <p className="text-sm text-green-600">Remaining: {formatCurrency(data.remaining)}</p>
+          <p className="text-sm text-blue-600">
+            Budget: {formatCurrency(data.budget)}
+          </p>
+          <p className="text-sm text-red-600">
+            Actual: {formatCurrency(data.actual)}
+          </p>
+          <p className="text-sm text-green-600">
+            Remaining: {formatCurrency(data.remaining)}
+          </p>
           <p className="text-sm text-gray-600">
             {data.percentage.toFixed(1)}% of budget used
           </p>
@@ -109,17 +136,26 @@ export default function BudgetComparisonChart({ transactions, budgets, selectedM
                 <div className="flex justify-between items-center">
                   <span className="font-medium">{item.category}</span>
                   <span className="text-sm text-gray-600">
-                    {formatCurrency(item.actual)} / {formatCurrency(item.budget)}
+                    {formatCurrency(item.actual)} /{" "}
+                    {formatCurrency(item.budget)}
                   </span>
                 </div>
-                <Progress 
-                  value={item.percentage} 
-                  className={`h-2 ${item.isOverBudget ? 'bg-red-100' : 'bg-gray-200'}`}
+                <Progress
+                  value={item.percentage}
+                  className={`h-2 ${
+                    item.isOverBudget ? "bg-red-100" : "bg-gray-200"
+                  }`}
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>{item.percentage.toFixed(1)}% used</span>
-                  <span className={item.isOverBudget ? 'text-red-600' : 'text-green-600'}>
-                    {item.isOverBudget ? 'Over budget' : `${formatCurrency(item.remaining)} remaining`}
+                  <span
+                    className={
+                      item.isOverBudget ? "text-red-600" : "text-green-600"
+                    }
+                  >
+                    {item.isOverBudget
+                      ? "Over budget"
+                      : `${formatCurrency(item.remaining)} remaining`}
                   </span>
                 </div>
               </div>
@@ -136,17 +172,20 @@ export default function BudgetComparisonChart({ transactions, budgets, selectedM
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={comparisonData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <BarChart
+                data={comparisonData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="category" 
+                <XAxis
+                  dataKey="category"
                   fontSize={12}
                   tick={{ fontSize: 12 }}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
-                <YAxis 
+                <YAxis
                   tickFormatter={formatCurrency}
                   fontSize={12}
                   tick={{ fontSize: 12 }}

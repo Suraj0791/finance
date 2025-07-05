@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DollarSign, TrendingUp, TrendingDown, Calendar } from "lucide-react";
+import { format, startOfMonth, endOfMonth } from "date-fns";
 
 export default function DashboardSummary({ transactions }) {
   const summary = useMemo(() => {
@@ -14,7 +14,7 @@ export default function DashboardSummary({ transactions }) {
         netAmount: 0,
         currentMonthExpenses: 0,
         mostRecentTransactions: [],
-        topCategory: null
+        topCategory: null,
       };
     }
 
@@ -23,19 +23,21 @@ export default function DashboardSummary({ transactions }) {
     const monthEnd = endOfMonth(currentMonth);
 
     const income = transactions
-      .filter(t => t.type === 'income')
+      .filter((t) => t.type === "income")
       .reduce((sum, t) => sum + t.amount, 0);
 
     const expenses = transactions
-      .filter(t => t.type === 'expense')
+      .filter((t) => t.type === "expense")
       .reduce((sum, t) => sum + t.amount, 0);
 
     const currentMonthExpenses = transactions
-      .filter(t => {
+      .filter((t) => {
         const transactionDate = new Date(t.date);
-        return t.type === 'expense' && 
-               transactionDate >= monthStart && 
-               transactionDate <= monthEnd;
+        return (
+          t.type === "expense" &&
+          transactionDate >= monthStart &&
+          transactionDate <= monthEnd
+        );
       })
       .reduce((sum, t) => sum + t.amount, 0);
 
@@ -46,15 +48,16 @@ export default function DashboardSummary({ transactions }) {
 
     // Find top expense category
     const categoryTotals = transactions
-      .filter(t => t.type === 'expense')
+      .filter((t) => t.type === "expense")
       .reduce((acc, t) => {
-        const category = t.category || 'Other';
+        const category = t.category || "Other";
         acc[category] = (acc[category] || 0) + t.amount;
         return acc;
       }, {});
 
-    const topCategory = Object.entries(categoryTotals)
-      .sort(([,a], [,b]) => b - a)[0];
+    const topCategory = Object.entries(categoryTotals).sort(
+      ([, a], [, b]) => b - a
+    )[0];
 
     return {
       totalIncome: income,
@@ -62,14 +65,16 @@ export default function DashboardSummary({ transactions }) {
       netAmount: income - expenses,
       currentMonthExpenses,
       mostRecentTransactions: mostRecent,
-      topCategory: topCategory ? { name: topCategory[0], amount: topCategory[1] } : null
+      topCategory: topCategory
+        ? { name: topCategory[0], amount: topCategory[1] }
+        : null,
     };
   }, [transactions]);
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
@@ -91,7 +96,9 @@ export default function DashboardSummary({ transactions }) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Expenses
+            </CardTitle>
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
@@ -107,9 +114,11 @@ export default function DashboardSummary({ transactions }) {
             <DollarSign className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${
-              summary.netAmount >= 0 ? 'text-green-600' : 'text-red-600'
-            }`}>
+            <div
+              className={`text-2xl font-bold ${
+                summary.netAmount >= 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
               {formatCurrency(summary.netAmount)}
             </div>
           </CardContent>
@@ -137,7 +146,9 @@ export default function DashboardSummary({ transactions }) {
           <CardContent>
             {summary.topCategory ? (
               <div className="space-y-2">
-                <div className="text-lg font-semibold">{summary.topCategory.name}</div>
+                <div className="text-lg font-semibold">
+                  {summary.topCategory.name}
+                </div>
                 <div className="text-2xl font-bold text-red-600">
                   {formatCurrency(summary.topCategory.amount)}
                 </div>
@@ -156,17 +167,26 @@ export default function DashboardSummary({ transactions }) {
             {summary.mostRecentTransactions.length > 0 ? (
               <div className="space-y-3">
                 {summary.mostRecentTransactions.map((transaction) => (
-                  <div key={transaction._id} className="flex justify-between items-center">
+                  <div
+                    key={transaction._id}
+                    className="flex justify-between items-center"
+                  >
                     <div>
-                      <div className="font-medium">{transaction.description}</div>
+                      <div className="font-medium">
+                        {transaction.description}
+                      </div>
                       <div className="text-sm text-gray-500">
-                        {format(new Date(transaction.date), 'MMM dd')}
+                        {format(new Date(transaction.date), "MMM dd")}
                       </div>
                     </div>
-                    <div className={`font-semibold ${
-                      transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {transaction.type === 'income' ? '+' : '-'}
+                    <div
+                      className={`font-semibold ${
+                        transaction.type === "income"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {transaction.type === "income" ? "+" : "-"}
                       {formatCurrency(Math.abs(transaction.amount))}
                     </div>
                   </div>

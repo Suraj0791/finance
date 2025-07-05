@@ -1,12 +1,28 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useMemo } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const COLORS = [
-  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8',
-  '#82CA9D', '#FFC658', '#FF7300', '#8DD1E1', '#D0743C', '#FF6B9D'
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+  "#FFC658",
+  "#FF7300",
+  "#8DD1E1",
+  "#D0743C",
+  "#FF6B9D",
 ];
 
 export default function CategoryPieChart({ transactions }) {
@@ -16,15 +32,15 @@ export default function CategoryPieChart({ transactions }) {
     }
 
     // Filter only expenses for category breakdown
-    const expenses = transactions.filter(t => t.type === 'expense');
-    
+    const expenses = transactions.filter((t) => t.type === "expense");
+
     if (expenses.length === 0) {
       return [];
     }
 
     // Group by category
     const categoryTotals = expenses.reduce((acc, transaction) => {
-      const category = transaction.category || 'Other';
+      const category = transaction.category || "Other";
       acc[category] = (acc[category] || 0) + transaction.amount;
       return acc;
     }, {});
@@ -34,15 +50,15 @@ export default function CategoryPieChart({ transactions }) {
       .map(([category, amount]) => ({
         name: category,
         value: amount,
-        percentage: 0 // Will be calculated by Recharts
+        percentage: 0, // Will be calculated by Recharts
       }))
       .sort((a, b) => b.value - a.value);
   }, [transactions]);
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(value);
   };
@@ -53,9 +69,7 @@ export default function CategoryPieChart({ transactions }) {
       return (
         <div className="bg-white p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{data.name}</p>
-          <p className="text-sm text-gray-600">
-            {formatCurrency(data.value)}
-          </p>
+          <p className="text-sm text-gray-600">{formatCurrency(data.value)}</p>
         </div>
       );
     }
@@ -70,7 +84,8 @@ export default function CategoryPieChart({ transactions }) {
         </CardHeader>
         <CardContent>
           <div className="h-64 flex items-center justify-center text-gray-500">
-            No expense data to display. Add some expense transactions to see category breakdown.
+            No expense data to display. Add some expense transactions to see
+            category breakdown.
           </div>
         </CardContent>
       </Card>
@@ -96,13 +111,18 @@ export default function CategoryPieChart({ transactions }) {
                 dataKey="value"
               >
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
                 ))}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
-              <Legend 
-                formatter={(value, entry) => `${value}: ${formatCurrency(entry.payload.value)}`}
-                wrapperStyle={{ fontSize: '12px' }}
+              <Legend
+                formatter={(value, entry) =>
+                  `${value}: ${formatCurrency(entry.payload.value)}`
+                }
+                wrapperStyle={{ fontSize: "12px" }}
               />
             </PieChart>
           </ResponsiveContainer>

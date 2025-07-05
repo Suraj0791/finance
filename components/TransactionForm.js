@@ -19,17 +19,17 @@ export default function TransactionForm({
   initialData = null,
 }) {
   const predefinedCategories = [
-    'Food & Dining',
-    'Transportation',
-    'Shopping',
-    'Entertainment',
-    'Bills & Utilities',
-    'Healthcare',
-    'Education',
-    'Travel',
-    'Income',
-    'Investment',
-    'Other'
+    "Food & Dining",
+    "Transportation",
+    "Shopping",
+    "Entertainment",
+    "Bills & Utilities",
+    "Healthcare",
+    "Education",
+    "Travel",
+    "Income",
+    "Investment",
+    "Other",
   ];
 
   const [formData, setFormData] = useState({
@@ -175,7 +175,9 @@ export default function TransactionForm({
               value={formData.category}
               onValueChange={(value) => handleChange("category", value)}
             >
-              <SelectTrigger className={errors.category ? "border-red-500" : ""}>
+              <SelectTrigger
+                className={errors.category ? "border-red-500" : ""}
+              >
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
