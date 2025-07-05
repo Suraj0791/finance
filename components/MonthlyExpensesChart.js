@@ -1,9 +1,23 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from 'date-fns';
+import { useMemo } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachMonthOfInterval,
+  subMonths,
+} from "date-fns";
 
 export default function MonthlyExpensesChart({ transactions }) {
   const chartData = useMemo(() => {
@@ -16,25 +30,25 @@ export default function MonthlyExpensesChart({ transactions }) {
     const startDate = subMonths(endDate, 5);
     const months = eachMonthOfInterval({ start: startDate, end: endDate });
 
-    const monthlyData = months.map(month => {
+    const monthlyData = months.map((month) => {
       const monthStart = startOfMonth(month);
       const monthEnd = endOfMonth(month);
-      
-      const monthTransactions = transactions.filter(transaction => {
+
+      const monthTransactions = transactions.filter((transaction) => {
         const transactionDate = new Date(transaction.date);
         return transactionDate >= monthStart && transactionDate <= monthEnd;
       });
 
       const expenses = monthTransactions
-        .filter(t => t.type === 'expense')
+        .filter((t) => t.type === "expense")
         .reduce((sum, t) => sum + t.amount, 0);
 
       const income = monthTransactions
-        .filter(t => t.type === 'income')
+        .filter((t) => t.type === "income")
         .reduce((sum, t) => sum + t.amount, 0);
 
       return {
-        month: format(month, 'MMM yyyy'),
+        month: format(month, "MMM yyyy"),
         expenses: expenses,
         income: income,
         net: income - expenses,
@@ -45,9 +59,9 @@ export default function MonthlyExpensesChart({ transactions }) {
   }, [transactions]);
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(value);
   };
@@ -58,8 +72,14 @@ export default function MonthlyExpensesChart({ transactions }) {
         <div className="bg-white p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{label}</p>
           {payload.map((entry, index) => (
-            <p key={index} className={`text-sm ${entry.dataKey === 'expenses' ? 'text-red-600' : 'text-green-600'}`}>
-              {entry.dataKey === 'expenses' ? 'Expenses' : 'Income'}: {formatCurrency(entry.value)}
+            <p
+              key={index}
+              className={`text-sm ${
+                entry.dataKey === "expenses" ? "text-red-600" : "text-green-600"
+              }`}
+            >
+              {entry.dataKey === "expenses" ? "Expenses" : "Income"}:{" "}
+              {formatCurrency(entry.value)}
             </p>
           ))}
         </div>
@@ -76,7 +96,8 @@ export default function MonthlyExpensesChart({ transactions }) {
         </CardHeader>
         <CardContent>
           <div className="h-64 flex items-center justify-center text-gray-500">
-            No data to display. Add some transactions to see your monthly overview.
+            No data to display. Add some transactions to see your monthly
+            overview.
           </div>
         </CardContent>
       </Card>
@@ -91,14 +112,13 @@ export default function MonthlyExpensesChart({ transactions }) {
       <CardContent>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="month" 
-                fontSize={12}
-                tick={{ fontSize: 12 }}
-              />
-              <YAxis 
+              <XAxis dataKey="month" fontSize={12} tick={{ fontSize: 12 }} />
+              <YAxis
                 tickFormatter={formatCurrency}
                 fontSize={12}
                 tick={{ fontSize: 12 }}

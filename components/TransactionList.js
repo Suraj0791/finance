@@ -1,22 +1,27 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Pencil, Trash2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Pencil, Trash2 } from "lucide-react";
+import { format } from "date-fns";
 
-export default function TransactionList({ transactions, onEdit, onDelete, loading = false }) {
+export default function TransactionList({
+  transactions,
+  onEdit,
+  onDelete,
+  loading = false,
+}) {
   const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this transaction?')) {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
       setDeletingId(id);
       try {
         await onDelete(id);
       } catch (error) {
-        console.error('Error deleting transaction:', error);
+        console.error("Error deleting transaction:", error);
       } finally {
         setDeletingId(null);
       }
@@ -24,9 +29,9 @@ export default function TransactionList({ transactions, onEdit, onDelete, loadin
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
@@ -74,27 +79,31 @@ export default function TransactionList({ transactions, onEdit, onDelete, loadin
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-medium">{transaction.description}</span>
                   <Badge
-                    variant={transaction.type === 'income' ? 'default' : 'destructive'}
+                    variant={
+                      transaction.type === "income" ? "default" : "destructive"
+                    }
                     className="text-xs"
                   >
                     {transaction.type}
                   </Badge>
                 </div>
                 <div className="text-sm text-gray-500">
-                  {format(new Date(transaction.date), 'MMM dd, yyyy')}
+                  {format(new Date(transaction.date), "MMM dd, yyyy")}
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <span
                   className={`font-semibold ${
-                    transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                    transaction.type === "income"
+                      ? "text-green-600"
+                      : "text-red-600"
                   }`}
                 >
-                  {transaction.type === 'income' ? '+' : '-'}
+                  {transaction.type === "income" ? "+" : "-"}
                   {formatCurrency(Math.abs(transaction.amount))}
                 </span>
-                
+
                 <div className="flex gap-1">
                   <Button
                     size="sm"
