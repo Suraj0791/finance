@@ -1,21 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Pencil, Trash2 } from 'lucide-react';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Pencil, Trash2 } from "lucide-react";
 
-export default function BudgetList({ budgets, onEdit, onDelete, loading = false }) {
+export default function BudgetList({
+  budgets,
+  onEdit,
+  onDelete,
+  loading = false,
+}) {
   const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this budget?')) {
+    if (window.confirm("Are you sure you want to delete this budget?")) {
       setDeletingId(id);
       try {
         await onDelete(id);
       } catch (error) {
-        console.error('Error deleting budget:', error);
+        console.error("Error deleting budget:", error);
       } finally {
         setDeletingId(null);
       }
@@ -23,16 +28,26 @@ export default function BudgetList({ budgets, onEdit, onDelete, loading = false 
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
   const getMonthName = (month) => {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     return months[month - 1];
   };
@@ -58,7 +73,8 @@ export default function BudgetList({ budgets, onEdit, onDelete, loading = false 
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-500">
-            No budgets set yet. Create your first budget to start tracking your spending!
+            No budgets set yet. Create your first budget to start tracking your
+            spending!
           </div>
         </CardContent>
       </Card>
@@ -84,16 +100,14 @@ export default function BudgetList({ budgets, onEdit, onDelete, loading = false 
                     {getMonthName(budget.month)} {budget.year}
                   </Badge>
                 </div>
-                <div className="text-sm text-gray-500">
-                  Monthly Budget
-                </div>
+                <div className="text-sm text-gray-500">Monthly Budget</div>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <span className="font-semibold text-blue-600">
                   {formatCurrency(budget.budgetAmount)}
                 </span>
-                
+
                 <div className="flex gap-1">
                   <Button
                     size="sm"

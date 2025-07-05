@@ -260,7 +260,12 @@ export default function Home() {
           </div>
           <div className="flex gap-2">
             <Button
-              onClick={() => setShowTransactionForm(true)}
+              type="button"
+              onClick={() => {
+                console.log("Add Transaction clicked");
+                setShowTransactionForm(true);
+                setActiveTab("transactions");
+              }}
               disabled={showTransactionForm || editingTransaction}
               className="flex items-center gap-2"
             >
@@ -268,7 +273,12 @@ export default function Home() {
               Add Transaction
             </Button>
             <Button
-              onClick={() => setShowBudgetForm(true)}
+              type="button"
+              onClick={() => {
+                console.log("Set Budget clicked");
+                setShowBudgetForm(true);
+                setActiveTab("budgets");
+              }}
               disabled={showBudgetForm || editingBudget}
               variant="outline"
               className="flex items-center gap-2"
@@ -323,6 +333,11 @@ export default function Home() {
                     initialData={editingTransaction}
                   />
                 )}
+                {/* Debug info */}
+                <div className="text-sm text-gray-500">
+                  showTransactionForm: {showTransactionForm.toString()},
+                  editingTransaction: {editingTransaction ? "true" : "false"}
+                </div>
 
                 <MonthlyExpensesChart transactions={transactions} />
               </div>
@@ -361,6 +376,11 @@ export default function Home() {
                 />
               </div>
             )}
+            {/* Debug info */}
+            <div className="text-sm text-gray-500">
+              showBudgetForm: {showBudgetForm.toString()}, editingBudget:{" "}
+              {editingBudget ? "true" : "false"}
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <BudgetList

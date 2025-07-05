@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Personal Finance Tracker
 
-## Getting Started
+A comprehensive web application for managing personal finances built with Next.js, React, shadcn/ui, Recharts, and MongoDB.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🏠 Dashboard
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Summary Cards**: Total income, expenses, net amount, and current month spending
+- **Monthly Overview Chart**: Visual representation of income vs expenses over time
+- **Spending Insights**: AI-powered insights about your spending patterns
+- **Recent Transactions**: Quick view of your latest financial activities
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 💰 Transaction Management (Stage 1)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- ✅ **Add/Edit/Delete Transactions**: Full CRUD operations with amount, date, and description
+- ✅ **Transaction List View**: Organized display of all transactions with sorting
+- ✅ **Monthly Expenses Chart**: Bar chart showing monthly spending trends
+- ✅ **Form Validation**: Comprehensive validation with error messages
 
-## Learn More
+### 📊 Categories (Stage 2)
 
-To learn more about Next.js, take a look at the following resources:
+- ✅ **Predefined Categories**: Food & Dining, Transportation, Shopping, Entertainment, Bills & Utilities, Healthcare, Education, Travel, and more
+- ✅ **Category-wise Pie Chart**: Visual breakdown of expenses by category
+- ✅ **Enhanced Dashboard**: Summary cards with category breakdown and insights
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 💳 Budgeting (Stage 3)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- ✅ **Monthly Category Budgets**: Set spending limits for each category
+- ✅ **Budget vs Actual Comparison**: Progress bars and charts showing budget performance
+- ✅ **Budget Management**: Add, edit, and delete budgets with full UI
+- ✅ **Spending Insights**: Smart alerts when over budget and spending trend analysis
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend**: Next.js 15, React 19, TypeScript/JavaScript
+- **UI Components**: shadcn/ui (built on Radix UI and Tailwind CSS)
+- **Charts**: Recharts for interactive data visualization
+- **Database**: MongoDB with Mongoose ODM
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## All Features Complete! 🎉
+
+✅ **Stage 1**: Basic Transaction Tracking - COMPLETE
+✅ **Stage 2**: Categories - COMPLETE  
+✅ **Stage 3**: Budgeting - COMPLETE
+
+Plus additional features:
+
+- Modern tabbed interface
+- Responsive design
+- Error handling
+- MongoDB integration
+- Beautiful UI with shadcn/ui

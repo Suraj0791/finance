@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 export async function PUT(request, { params }) {
   try {
     await connectDB();
+    const { id } = await params;
     const body = await request.json();
     const { category, budgetAmount, month, year } = body;
 
@@ -31,7 +32,7 @@ export async function PUT(request, { params }) {
     }
 
     const budget = await Budget.findByIdAndUpdate(
-      params.id,
+      id,
       {
         category: category.trim(),
         budgetAmount: parseFloat(budgetAmount),
@@ -59,7 +60,8 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const budget = await Budget.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const budget = await Budget.findByIdAndDelete(id);
 
     if (!budget) {
       return NextResponse.json({ error: "Budget not found" }, { status: 404 });

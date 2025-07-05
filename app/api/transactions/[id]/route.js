@@ -5,7 +5,8 @@ import { NextResponse } from "next/server";
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const transaction = await Transaction.findById(params.id);
+    const { id } = await params;
+    const transaction = await Transaction.findById(id);
 
     if (!transaction) {
       return NextResponse.json(
@@ -27,6 +28,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectDB();
+    const { id } = await params;
     const body = await request.json();
     const { amount, description, date, type, category } = body;
 
@@ -53,7 +55,7 @@ export async function PUT(request, { params }) {
     }
 
     const transaction = await Transaction.findByIdAndUpdate(
-      params.id,
+      id,
       {
         amount: parseFloat(amount),
         description: description.trim(),
@@ -85,7 +87,8 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const transaction = await Transaction.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const transaction = await Transaction.findByIdAndDelete(id);
 
     if (!transaction) {
       return NextResponse.json(
