@@ -21,7 +21,7 @@ export async function POST(request) {
     await connectDB();
     const body = await request.json();
 
-    const { amount, description, date, type } = body;
+    const { amount, description, date, type, category } = body;
 
     // Validation
     if (!amount || !description || !date || !type) {
@@ -48,6 +48,10 @@ export async function POST(request) {
     const transaction = new Transaction({
       amount: parseFloat(amount),
       description: description.trim(),
+      date: new Date(date),
+      type,
+      category: category || "Other",
+    });
       date: new Date(date),
       type,
     });

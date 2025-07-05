@@ -18,6 +18,20 @@ export default function TransactionForm({
   onCancel,
   initialData = null,
 }) {
+  const predefinedCategories = [
+    'Food & Dining',
+    'Transportation',
+    'Shopping',
+    'Entertainment',
+    'Bills & Utilities',
+    'Healthcare',
+    'Education',
+    'Travel',
+    'Income',
+    'Investment',
+    'Other'
+  ];
+
   const [formData, setFormData] = useState({
     amount: initialData?.amount || "",
     description: initialData?.description || "",
@@ -25,6 +39,7 @@ export default function TransactionForm({
       ? new Date(initialData.date).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0],
     type: initialData?.type || "expense",
+    category: initialData?.category || "Other",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,6 +69,10 @@ export default function TransactionForm({
 
     if (!formData.type) {
       newErrors.type = "Transaction type is required";
+    }
+
+    if (!formData.category) {
+      newErrors.category = "Category is required";
     }
 
     setErrors(newErrors);
@@ -147,6 +166,28 @@ export default function TransactionForm({
             </Select>
             {errors.type && (
               <p className="text-sm text-red-500">{errors.type}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={formData.category}
+              onValueChange={(value) => handleChange("category", value)}
+            >
+              <SelectTrigger className={errors.category ? "border-red-500" : ""}>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {predefinedCategories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.category && (
+              <p className="text-sm text-red-500">{errors.category}</p>
             )}
           </div>
 
