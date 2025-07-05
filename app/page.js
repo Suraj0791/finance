@@ -362,12 +362,20 @@ export default function Home() {
               </div>
             )}
 
-            <BudgetComparisonChart
-              transactions={transactions}
-              budgets={budgets}
-              selectedMonth={new Date().getMonth() + 1}
-              selectedYear={new Date().getFullYear()}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <BudgetList
+                budgets={budgets}
+                onEdit={handleEditBudget}
+                onDelete={handleDeleteBudget}
+                loading={budgetsLoading}
+              />
+              <BudgetComparisonChart
+                transactions={transactions}
+                budgets={budgets}
+                selectedMonth={new Date().getMonth() + 1}
+                selectedYear={new Date().getFullYear()}
+              />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
