@@ -86,6 +86,11 @@ export default function TransactionList({
                   >
                     {transaction.type}
                   </Badge>
+                  {transaction.category && (
+                    <Badge variant="outline" className="text-xs">
+                      {transaction.category}
+                    </Badge>
+                  )}
                 </div>
                 <div className="text-sm text-gray-500">
                   {format(new Date(transaction.date), "MMM dd, yyyy")}

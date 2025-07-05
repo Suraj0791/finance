@@ -28,7 +28,7 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
     const body = await request.json();
-    const { amount, description, date, type } = body;
+    const { amount, description, date, type, category } = body;
 
     // Validation
     if (!amount || !description || !date || !type) {
@@ -59,6 +59,7 @@ export async function PUT(request, { params }) {
         description: description.trim(),
         date: new Date(date),
         type,
+        category: category || "Other",
         updatedAt: new Date(),
       },
       { new: true }

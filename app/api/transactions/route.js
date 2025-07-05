@@ -52,9 +52,6 @@ export async function POST(request) {
       type,
       category: category || "Other",
     });
-      date: new Date(date),
-      type,
-    });
 
     await transaction.save();
 
